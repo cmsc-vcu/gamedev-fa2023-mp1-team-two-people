@@ -389,7 +389,7 @@ Transform:
   m_GameObject: {fileID: 166838306}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.8, y: -1.04, z: 0}
+  m_LocalPosition: {x: -2.35, y: -1.04, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -448,7 +448,7 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.51017463, y: 0.4389764}
+  m_Offset: {x: 2, y: 0.4389764}
   serializedVersion: 2
   m_Radius: 0.7818576
 --- !u!114 &166838316
@@ -469,6 +469,7 @@ MonoBehaviour:
     m_Bits: 64
   moveSpeed: 3
   jumpForce: 14
+  weaponHitCollider: {fileID: 166838314}
   isPlayer1: 1
 --- !u!1 &300899929
 GameObject:
@@ -844,6 +845,7 @@ MonoBehaviour:
     m_Bits: 0
   moveSpeed: 7
   jumpForce: 14
+  weaponHitCollider: {fileID: 0}
   isPlayer1: 1
 --- !u!114 &519420035
 MonoBehaviour:
@@ -1609,10 +1611,10 @@ MonoBehaviour:
   maxHealth: 10
   jumpableGround:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   moveSpeed: 3
   jumpForce: 14
-  isPlayer1: 1
+  isPlayer1: 0
 --- !u!1 &1674746624
 GameObject:
   m_ObjectHideFlags: 0

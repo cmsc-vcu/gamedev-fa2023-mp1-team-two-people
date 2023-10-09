@@ -72,16 +72,18 @@ public class Player2Movement : MonoBehaviour
         AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
         isAttacking = stateInfo.IsName("attack1");
 
-        if (Input.GetKeyDown(KeyCode.RightControl))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             player2_attacking = true;
             Debug.Log("Player2 attacked!");
             CheckForHit();
             anim.SetTrigger("attack1");
-           
+            Debug.Log("Triggered attack1 animation");
+
+
         }
         player2_attacking = false;
-        if (Input.GetKeyDown(KeyCode.RightShift))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             anim.SetTrigger("block");
         }

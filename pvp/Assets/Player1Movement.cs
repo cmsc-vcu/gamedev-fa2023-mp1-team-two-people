@@ -15,6 +15,7 @@ public class Player1Movement : MonoBehaviour
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private float jumpForce = 14f;
 
+    [SerializeField] private CircleCollider2D weaponHitCollider;  // Declare a variable to hold the CircleCollider2D reference
     [SerializeField] private bool isPlayer1 = true;
     bool player1_attacking;
     bool player2_attacking;
@@ -32,10 +33,18 @@ public class Player1Movement : MonoBehaviour
 
     void Update()
     {
-        dirX = Input.GetAxisRaw("Horizontal");
-        rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
+        if (!player1_attacking)
+        {
+            dirX = Input.GetAxisRaw("Horizontal");
+            rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
+        }
 
         UpdateAnimationState();
+
+        if (player1_attacking)
+        {
+            CheckForHit();
+        }
     }
 
     private void UpdateAnimationState()
@@ -47,12 +56,10 @@ public class Player1Movement : MonoBehaviour
         if (dirX > 0f)
         {
             state = MovementState.running;
-           // sprite.flipX = false;
         }
         else if (dirX < 0f)
         {
             state = MovementState.running;
-           // sprite.flipX = true;
         }
         else
         {
@@ -72,24 +79,19 @@ public class Player1Movement : MonoBehaviour
         AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
         isAttacking = stateInfo.IsName("attack1");
 
-        if ((isPlayer1 && Input.GetKeyDown(KeyCode.Q)))
+        if (isPlayer1)
         {
-            player1_attacking = true;
-            Debug.Log("Player1 attacked!");
-            CheckForHit();
-            anim.SetTrigger("attack1");
-            
-        }
-        player1_attacking = false;
-
-        if ((isPlayer1 && Input.GetKeyDown(KeyCode.E)))
-        {
-            anim.SetTrigger("block");
-        }
-
-        if ((isPlayer1 && Input.GetKeyDown(KeyCode.W)))
-        {
-            anim.SetTrigger("roll");
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+               
+                player1_attacking = true;
+                Debug.Log("Player1 attacked!");
+                anim.SetTrigger("attack1");
+            }
+            else
+            {
+                player1_attacking = false;  // Reset when not attacking
+            }
         }
 
         anim.SetInteger("state", (int)state);
@@ -97,14 +99,25 @@ public class Player1Movement : MonoBehaviour
 
     private void CheckForHit()
     {
-        RaycastHit2D hit = Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.right, 0.1f, LayerMask.GetMask("Player2"));
-
-        if (hit.collider != null)
+        if (weaponHitCollider == null)
         {
-            Player2Movement player2 = hit.collider.GetComponent<Player2Movement>();
+            Debug.LogWarning("Weapon hit collider reference not set.");
+            return;
+        }
+
+        // Use the radius and position from the assigned circle collider
+        float hitRadius = weaponHitCollider.radius;
+        Vector2 hitPosition = weaponHitCollider.transform.position;
+
+        Collider2D[] hits = Physics2D.OverlapCircleAll(hitPosition, hitRadius, LayerMask.GetMask("Player2"));
+
+        foreach (Collider2D hitCollider in hits)
+        {
+            Player2Movement player2 = hitCollider.GetComponent<Player2Movement>();
             if (player2 != null)
             {
                 player2.TakeDamage(20);
+                Debug.Log("Hit Player2!");
             }
         }
     }
@@ -113,6 +126,7 @@ public class Player1Movement : MonoBehaviour
     {
         if (player1_attacking && collision.gameObject.CompareTag("Player2"))
         {
+            Debug.Log("Hit!");
             CheckForHit();
         }
 
