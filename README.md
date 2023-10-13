@@ -24,4 +24,4 @@ Each player can take 5 hits before they are defeated.
 Battle your friends and see who wins!
 
 Unity Play Link:
-<[https://play.unity.com/mg/other/webgl-builds-373624](https://play.unity.com/mg/other/builds-d8-10)https://play.unity.com/mg/other/builds-d8-10>
+<[https://play.unity.com/mg/other/webgl-builds-373624](https://play.unity.com/mg/other/builds-d8-10)>
